@@ -320,6 +320,10 @@ Best aluminum works at affordable prices!"></textarea>
             🔊 Speak
         </button>
 
+        <button class="speak-btn" onclick="toggleLoop()" id="loopBtn">
+            🔁 Loop OFF
+        </button>
+
         <button class="stop-btn" onclick="stopSpeech()">
             ⛔ Stop
         </button>
@@ -382,6 +386,29 @@ function loadVoices(){
 speechSynthesis.onvoiceschanged = loadVoices;
 loadVoices();
 
+/* Loop System */
+let loopEnabled = false;
+
+function toggleLoop(){
+
+    const loopBtn = document.getElementById('loopBtn');
+
+    loopEnabled = !loopEnabled;
+
+    if(loopEnabled){
+
+        loopBtn.innerHTML = '🔁 Loop ON';
+        statusText.innerHTML = '🔁 Recurring mode enabled.';
+
+    }else{
+
+        loopBtn.innerHTML = '🔁 Loop OFF';
+        statusText.innerHTML = '🔁 Recurring mode disabled.';
+
+    }
+
+}
+
 /* Speak Text */
 function speakText(){
 
@@ -403,7 +430,17 @@ function speakText(){
     statusText.innerHTML = '🔊 Speaking advert...';
 
     utterance.onend = ()=>{
-        statusText.innerHTML = '✅ Finished speaking.';
+
+        if(loopEnabled){
+
+            speakText();
+
+        }else{
+
+            statusText.innerHTML = '✅ Finished speaking.';
+
+        }
+
     };
 
 }
@@ -480,4 +517,4 @@ function downloadAudio(){
 </script>
 
 </body>
-  </html>
+</html>
